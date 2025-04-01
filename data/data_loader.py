@@ -22,4 +22,13 @@ def get_data_loaders(batch_size=64, validation_split=0.1, dataset_root="./datase
     valid_loader = data.DataLoader(valid_data, batch_size=batch_size)
     test_loader = data.DataLoader(test_data, batch_size=batch_size)
 
+    # Print the number of batches in each loader
+    print(f"Number of batches in train loader: {len(train_loader)}")
+    print(f"Number of batches in valid loader: {len(valid_loader)}")
+    print(f"Number of batches in test loader: {len(test_loader)}")
+    
+    print(f"Number of training examples: {len(train_data)}")
+    print(f"Number of validation examples: {len(valid_data)}")
+    print(f"Number of test examples: {len(test_data)}")
+
     return train_loader, valid_loader, test_loader
