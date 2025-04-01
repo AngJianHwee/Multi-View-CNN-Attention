@@ -10,7 +10,7 @@ from utils.visualization import plot_training_metrics, visualize_attention
 import os
 
 
-def main():
+def main(batch_size, num_epochs, learning_rate, data_set_root, device):
     # check if data_set_root exists
     if not os.path.exists(data_set_root):
         os.makedirs(data_set_root)
@@ -140,4 +140,4 @@ def main():
         visualize_attention(sample_images, attention_maps, x_dim=16, y_dim=16)
 
 if __name__ == "__main__":
-    main()
+    main(batch_size=batch_size, num_epochs=num_epochs, learning_rate=learning_rate, data_set_root=data_set_root, device=device)
