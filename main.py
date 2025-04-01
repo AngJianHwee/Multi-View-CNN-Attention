@@ -138,6 +138,11 @@ def main(batch_size, num_epochs, learning_rate, data_set_root, device):
         att_map2 = (att_map2 - att_map2.min()) / (att_map2.max() - att_map2.min())
         att_map3 = (att_map3 - att_map3.min()) / (att_map3.max() - att_map3.min())
 
+        # print shape
+        print(f"Attention map 1 shape: {att_map1.shape}")
+        print(f"Attention map 2 shape: {att_map2.shape}")
+        print(f"Attention map 3 shape: {att_map3.shape}")
+        
         # Prepare attention maps for visualization (same mean map for all 5 images)
         attention_maps = [att_map1, att_map2, att_map3]
 
