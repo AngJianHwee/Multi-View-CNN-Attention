@@ -171,7 +171,7 @@ def main():
             # Append corrected attention maps
             attention_maps.append((att_map1, att_map2, att_map3))
     # Visualize
-    visualize_attention(sample_images, attention_maps, x_dim=16, y_dim=16)
+    visualize_attention(sample_images, attention_maps, x_dim=128, y_dim=128)
     
 if __name__ == "__main__":
     main()
