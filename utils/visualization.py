@@ -84,6 +84,11 @@ def visualize_attention(image, attention_map, x_dim, y_dim, save_path=None):
     import matplotlib.pyplot as plt
 
     fig, axes = plt.subplots(1, 2, figsize=(6, 3))
+    
+    # print the shape
+    print(f"Image shape: {image.shape}")
+    print(f"Attention map shape: {attention_map.shape}")
+    
 
     # Plot the original image
     axes[0].imshow(image.permute(1, 2, 0).cpu().numpy())
