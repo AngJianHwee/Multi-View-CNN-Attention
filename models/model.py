@@ -33,8 +33,8 @@ class SingleViewCNN(nn.Module):
         self.fc_out = nn.Linear(
             2048, output_dim
         )  # Assuming 32x32 input -> 4x4 after convolutions
-        print(f"reshape_size: {reshape_size}")
-        print(f"self.fc_out: {self.fc_out}")
+        # print(f"reshape_size: {reshape_size}")
+        # print(f"self.fc_out: {self.fc_out}")
 
     def use_attention(self, x):
         bs, c, h, w = x.shape
