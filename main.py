@@ -119,55 +119,53 @@ def main():
         sample_images = test_images[:5]
         
         attention_maps = []
+    
+    for i in range(len(sample_images)):
+        # Get the attention maps for each view
+        x1 = model.view1.conv1(sample_images[i].unsqueeze(0))
+        _, att_map1 = model.view1.use_attention(x1)  # [1, 1024, 1024]
+        x2 = model.view2.conv1(sample_images[i].unsqueeze(0))
+        _, att_map2 = model.view2.use_attention(x2)
+        x3 = model.view3.conv1(sample_images[i].unsqueeze(0))
+        _, att_map3 = model.view3.use_attention(x3)
         
-        for i in range(len(sample_images)):
-            # Get the attention maps for each view
-            # Process through each view for the current image
-            x1 = model.view1.conv1(sample_images[i].unsqueeze(0))
-            _, att_map1 = model.view1.use_attention(x1)
-            x2 = model.view2.conv1(sample_images[i].unsqueeze(0))
-            _, att_map2 = model.view2.use_attention(x2)
-            x3 = model.view3.conv1(sample_images[i].unsqueeze(0))
-            _, att_map3 = model.view3.use_attention(x3)
-            
-            # print all the dimensions
-            print(f"Image {i+1}:")
-            print(f"View 1 Attention Map Shape: {att_map1.shape}")
-            print(f"View 2 Attention Map Shape: {att_map2.shape}")
-            print(f"View 3 Attention Map Shape: {att_map3.shape}")
-            
-            # Calculate the mean attention map for each view
-            att_map1 = att_map1.mean(dim=0)
-            att_map2 = att_map2.mean(dim=0)
-            att_map3 = att_map3.mean(dim=0)
-            
-            # Print the mean attention map shapes
-            print(f"Mean Attention Map 1 Shape: {att_map1.shape}")
-            print(f"Mean Attention Map 2 Shape: {att_map2.shape}")
-            print(f"Mean Attention Map 3 Shape: {att_map3.shape}")
-            
-            # normalize the attention maps
-            att_map1 = (att_map1 - att_map1.min()) / (att_map1.max() - att_map1.min())
-            att_map2 = (att_map2 - att_map2.min()) / (att_map2.max() - att_map2.min())
-            att_map3 = (att_map3 - att_map3.min()) / (att_map3.max() - att_map3.min())
-            
-            # Print the normalized attention map shapes
-            print(f"Normalized Attention Map 1 Shape: {att_map1.shape}")
-            print(f"Normalized Attention Map 2 Shape: {att_map2.shape}")
-            print(f"Normalized Attention Map 3 Shape: {att_map3.shape}")
-
-            # Reshape the attention maps to the original image size [from 1024,1024 to [32,32]
-            att_map1 = np.resize(att_map1.cpu().numpy(), (32, 32))
-            att_map2 = np.resize(att_map2.cpu().numpy(), (32, 32))
-            att_map3 = np.resize(att_map3.cpu().numpy(), (32, 32))
-            
-            
-            
-            # Append the attention maps for the current image
-            attention_maps.append((att_map1[0], att_map2[0], att_map3[0]))
-            
-        # Visualize 5 images with their corresponding mean attention maps
-        visualize_attention(sample_images, attention_maps, x_dim=16, y_dim=16)
+        # Print initial shapes
+        print(f"Image {i+1}:")
+        print(f"View 1 Attention Map Shape: {att_map1.shape}")
+        print(f"View 2 Attention Map Shape: {att_map2.shape}")
+        print(f"View 3 Attention Map Shape: {att_map3.shape}")
+        
+        # Mean across batch (already 1, but for consistency)
+        att_map1 = att_map1.mean(dim=0)  # [1024, 1024]
+        att_map2 = att_map2.mean(dim=0)
+        att_map3 = att_map3.mean(dim=0)
+        
+        # Reduce to 32x32 by averaging across query dimension or taking a slice
+        # Here, we'll average across the second dim to get attention paid to each position
+        att_map1 = att_map1.mean(dim=0)  # [1024]
+        att_map2 = att_map2.mean(dim=0)
+        att_map3 = att_map3.mean(dim=0)
+        
+        print(f"Mean Attention Map 1 Shape: {att_map1.shape}")
+        print(f"Mean Attention Map 2 Shape: {att_map2.shape}")
+        print(f"Mean Attention Map 3 Shape: {att_map3.shape}")
+        
+        # Normalize
+        att_map1 = (att_map1 - att_map1.min()) / (att_map1.max() - att_map1.min())
+        att_map2 = (att_map2 - att_map2.min()) / (att_map2.max() - att_map2.min())
+        att_map3 = (att_map3 - att_map3.min()) / (att_map3.max() - att_map3.min())
+        
+        print(f"Normalized Attention Map 1 Shape: {att_map1.shape}")
+        print(f"Normalized Attention Map 2 Shape: {att_map2.shape}")
+        print(f"Normalized Attention Map 3 Shape: {att_map3.shape}")
+        
+        # Reshape to 32x32
+        att_map1 = att_map1.view(32, 32).cpu().numpy()
+        att_map2 = att_map2.view(32, 32).cpu().numpy()
+        att_map3 = att_map3.view(32, 32).cpu().numpy()
+        
+        # Append corrected attention maps
+        attention_maps.append((att_map1, att_map2, att_map3))
 
 if __name__ == "__main__":
     main()

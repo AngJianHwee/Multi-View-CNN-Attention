@@ -42,14 +42,13 @@ def plot_training_metrics(training_loss_logger, training_acc_logger, validation_
     # plt.show()
 
 
-# Rest of your visualization.py (like visualize_predictions) would go here
 def visualize_attention(images, attention_maps, x_dim, y_dim):
     """
     Visualize 5 images and their mean attention maps from three views in a 5x4 grid.
     
     Args:
         images: Tensor of shape [5, C, H, W]
-        attention_maps: List of 5 tuples, each with 3 mean attention maps [seq_len] (e.g., 1024)
+        attention_maps: List of 5 tuples, each with 3 mean attention maps [32, 32]
         x_dim, y_dim: Coordinates to mark on the original images
     """
     fig, axes = plt.subplots(5, 4, figsize=(16, 20))  # 5 rows, 4 columns (20 total subplots)
@@ -69,10 +68,7 @@ def visualize_attention(images, attention_maps, x_dim, y_dim):
         # Plot mean attention maps for each view
         titles = ["View 1 Mean Attention", "View 2 Mean Attention", "View 3 Mean Attention"]
         for j, (att_map, title) in enumerate(zip(attention_maps[i], titles)):
-            # make sure they are same dim
-            att_map = att_map.reshape(img_display.shape[0], img_display.shape[1])
-            
-            # overlay the attention map on the image
+            # Overlay attention map on the image
             axes[i, j + 1].imshow(img_display, alpha=0.5)
             axes[i, j + 1].imshow(att_map, cmap='hot', alpha=0.5)
             
@@ -84,8 +80,7 @@ def visualize_attention(images, attention_maps, x_dim, y_dim):
     plt.savefig('mean_attention_maps_five_images.png')
     print("Mean attention maps for 5 images saved as mean_attention_maps_five_images.png")
     # plt.show()  # Uncomment if you want to display it too
-
-
+    
 # Rest of your visualization.py (like visualize_predictions) would go here
 def visualize_predictions(model, test_loader, device):
     model.eval()
