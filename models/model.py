@@ -36,27 +36,27 @@ class SingleViewCNN(nn.Module):
         return att_out.transpose(1, 2).reshape(bs, c, h, w), att_map
 
     def forward(self, x):
-        print(f"Input dimension: {x.shape}")
+        # print(f"Input dimension: {x.shape}")
         x = self.conv1(x)
-        print(f"Dimension after conv1: {x.shape}")
+        # print(f"Dimension after conv1: {x.shape}")
         x = self.scale * self.use_attention(x)[0] + x
-        print(f"Dimension after attention: {x.shape}")
+        # print(f"Dimension after attention: {x.shape}")
         x = F.relu(x)
-        print(f"Dimension after relu: {x.shape}")
+        # print(f"Dimension after relu: {x.shape}")
         x = F.relu(self.bn1(self.conv2(x)))
-        print(f"Dimension after conv2: {x.shape}")
+        # print(f"Dimension after conv2: {x.shape}")
         x = F.relu(self.bn2(self.conv3(x)))
-        print(f"Dimension after conv3: {x.shape}")
+        # print(f"Dimension after conv3: {x.shape}")
         x = F.relu(self.bn3(self.conv4(x)))
-        print(f"Dimension after conv4: {x.shape}")
+        # print(f"Dimension after conv4: {x.shape}")
     
         features = x.reshape(x.shape[0], -1)  # BS x (128 * 4 * 4)
-        print(f"Dimension after flattening: {features.shape}")
+        # print(f"Dimension after flattening: {features.shape}")
         
         # features_drop = self.dropout(features)
         # output = self.fc_out(features_drop)
         output = self.fc_out(features)
-        print(f"Output dimension: {output.shape}")
+        # print(f"Output dimension: {output.shape}")
         
         return output, features
 
@@ -89,7 +89,7 @@ class ThreeViewCNN(nn.Module):
         
         # Concatenate features for fusion
         fused_features = torch.cat((feat1, feat2, feat3), dim=1)  # BS x (128*4*4*3)
-        print(f"Fused features shape: {fused_features.shape}")
+        # print(f"Fused features shape: {fused_features.shape}")
         
         # Learnable fusion
         fused_pred = self.fusion(fused_features)
