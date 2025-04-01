@@ -69,7 +69,9 @@ def visualize_attention(images, attention_maps, x_dim, y_dim):
         # Plot mean attention maps for each view
         titles = ["View 1 Mean Attention", "View 2 Mean Attention", "View 3 Mean Attention"]
         for j, (att_map, title) in enumerate(zip(attention_maps[i], titles)):
-            axes[i, j + 1].imshow(att_map.reshape(32, 32).cpu().numpy(), cmap='viridis')
+            att_map = att_map.cpu().numpy()
+            att_map = np.reshape(att_map, (32, 32))
+            axes[i, j + 1].imshow(att_map, cmap='viridis')
             if i == 0:
                 axes[i, j + 1].set_title(title)
             axes[i, j + 1].axis('off')
