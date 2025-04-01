@@ -71,10 +71,22 @@ class ThreeViewCNN(nn.Module):
         super(ThreeViewCNN, self).__init__()
         
         # Three parallel view modules with their own output layers
-        self.view1 = SingleViewCNN(channels_ins[0], output_dims_individual[0], reshape_size)
-        self.view2 = SingleViewCNN(channels_ins[1], output_dims_individual[1], reshape_size)
-        self.view3 = SingleViewCNN(channels_ins[2], output_dims_individual[2], reshape_size)
-        
+        self.view1 = SingleViewCNN(
+            channels_in=channels_ins[0],
+            reshape_size=reshape_size,
+            output_dim=output_dims_individual[0]
+        )
+        self.view2 = SingleViewCNN(
+            channels_in=channels_ins[1],
+            reshape_size=reshape_size,
+            output_dim=output_dims_individual[1]
+        )
+        self.view3 = SingleViewCNN(
+            channels_in=channels_ins[2],
+            reshape_size=reshape_size,
+            output_dim=output_dims_individual[2]
+        )
+                
         # Fusion mechanism using a FC layer
         feature_dim = self.view1.fc_out.in_features + self.view2.fc_out.in_features + self.view3.fc_out.in_features
 
