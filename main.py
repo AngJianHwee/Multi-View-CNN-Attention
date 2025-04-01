@@ -144,12 +144,7 @@ def main():
             att_map1 = att_map1.mean(dim=0)  # [1024, 1024]
             att_map2 = att_map2.mean(dim=0)
             att_map3 = att_map3.mean(dim=0)
-            
-            # Reduce to 32x32 by averaging across query dimension or taking a slice
-            # Here, we'll average across the second dim to get attention paid to each position
-            att_map1 = att_map1.mean(dim=0)  # [1024]
-            att_map2 = att_map2.mean(dim=0)
-            att_map3 = att_map3.mean(dim=0)
+
             
             print(f"Mean Attention Map 1 Shape: {att_map1.shape}")
             print(f"Mean Attention Map 2 Shape: {att_map2.shape}")
