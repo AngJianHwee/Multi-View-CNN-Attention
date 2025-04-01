@@ -64,7 +64,7 @@ class SingleViewCNN(nn.Module):
         return output, features
 
 class ThreeViewCNN(nn.Module):
-    def __init__(self, channels_ins, output_dims_individual, output_dim=10, reshape_size):
+    def __init__(self, channels_ins, output_dims_individual, reshape_size, output_dim=10):
         super(ThreeViewCNN, self).__init__()
         
         # Three parallel view modules with their own output layers
