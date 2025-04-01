@@ -13,7 +13,7 @@ def train(model, optimizer, loader, device, loss_fun, loss_logger):
         loss.backward()
         optimizer.step()
         loss_logger.append(loss.item())
-        # break  # TODO: Remove this break to train on the entire dataset
+        break  # TODO: Remove this break to train on the entire dataset
     return model, optimizer, loss_logger
 
 
