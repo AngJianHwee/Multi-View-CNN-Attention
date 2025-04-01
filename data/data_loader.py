@@ -22,6 +22,27 @@ def get_data_loaders(batch_size=64, validation_split=0.1, dataset_root="./datase
     if total_samples == 0:
         raise ValueError("Training dataset is empty. Check dataset_root or download process.")
 
+    # Calculate number of validation samples
+    num_valid_samples = int(total_samples * validation_split)
+    num_train_samples = total_samples - num_valid_samples
+    print(f"Total training samples: {total_samples}, Validation samples: {num_valid_samples}")
+    # Split dataset into training and validation
+    train_data, valid_data = data.random_split(train_data, [num_train_samples, num_valid_samples])
+    print(f"Training samples: {len(train_data)}, Validation samples: {len(valid_data)}")
+    # Check if split was successful
+    if len(train_data) + len(valid_data) != total_samples:
+        raise ValueError("Dataset split error. Check the split sizes.")
+    # Check if any dataset is empty
+    if len(train_data) == 0 or len(valid_data) == 0:
+        raise ValueError("One of the datasets is empty after splitting. Check split sizes.")
+    # Check if batch size is valid
+    if batch_size <= 0:
+        raise ValueError("Batch size must be a positive integer.")
+    if batch_size > len(train_data):
+        raise ValueError("Batch size exceeds the number of training samples.")
+    # Check if validation split is valid
+    if validation_split <= 0 or validation_split >= 1:
+        raise ValueError("Validation split must be between 0 and 1.")
 
     # Create data loaders
     train_loader = data.DataLoader(train_data, shuffle=True, batch_size=batch_size)
