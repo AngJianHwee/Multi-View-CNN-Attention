@@ -114,28 +114,21 @@ def main():
         # Take first 5 images for visualization
         sample_images = test_images[:5]
         
-        # Batch inference for all images in the batch to get attention maps
-        batch_size = test_images.size(0)
+        attention_maps = []
         
-        # Process through each view for the entire batch
-        x1 = model.view1.conv1(test_images)  # [batch_size, 64, 32, 32]
-        _, att_map1 = model.view1.use_attention(x1)  # [batch_size, 1024, 1024]
-        
-        x2 = model.view2.conv1(test_images)
-        _, att_map2 = model.view2.use_attention(x2)
-        
-        x3 = model.view3.conv1(test_images)
-        _, att_map3 = model.view3.use_attention(x3)
-        
-        # Compute mean attention map across the batch for each view
-        # att_map shape: [batch_size, seq_len, seq_len] -> mean over batch
-        mean_att_map1 = att_map1.mean(dim=0)[0]  # [1024] (mean across batch, first position)
-        mean_att_map2 = att_map2.mean(dim=0)[0]
-        mean_att_map3 = att_map3.mean(dim=0)[0]
-        
-        # Prepare attention maps for visualization (same mean map for all 5 images)
-        attention_maps = [(mean_att_map1, mean_att_map2, mean_att_map3)] * 5
-        
+        for i in range(len(sample_images)):
+            # Get the attention maps for each view
+            # Process through each view for the current image
+            x1 = model.view1.conv1(sample_images[i].unsqueeze(0))
+            _, att_map1 = model.view1.use_attention(x1)
+            x2 = model.view2.conv1(sample_images[i].unsqueeze(0))
+            _, att_map2 = model.view2.use_attention(x2)
+            x3 = model.view3.conv1(sample_images[i].unsqueeze(0))
+            _, att_map3 = model.view3.use_attention(x3)
+            
+            # Append the attention maps for the current image
+            attention_maps.append((att_map1[0], att_map2[0], att_map3[0]))
+            
         # Visualize 5 images with their corresponding mean attention maps
         visualize_attention(sample_images, attention_maps, x_dim=16, y_dim=16)
 
