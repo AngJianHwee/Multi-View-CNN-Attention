@@ -31,7 +31,7 @@ class SingleViewCNN(nn.Module):
 
         # case not 32
         self.fc_out = nn.Linear(
-            128 * (reshape_size // 32) * (reshape_size // 32), output_dim
+            128 * (reshape_size // 8) * (reshape_size // 8), output_dim
         )  # Assuming 32x32 input -> 4x4 after convolutions
         print(f"reshape_size: {reshape_size}")
         print(f"self.fc_out: {self.fc_out}")
