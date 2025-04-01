@@ -34,8 +34,9 @@ def plot_training_metrics(training_loss_logger, training_acc_logger, validation_
     ax2.legend()
 
     plt.tight_layout()
-    plt.show()
     plt.savefig('training_metrics.png')  # Save the figure
+    # plt.show()
+
 
 # Rest of your visualization.py (like visualize_predictions) would go here
 def visualize_predictions(model, test_loader, device):
@@ -49,8 +50,9 @@ def visualize_predictions(model, test_loader, device):
         plt.figure(figsize=(20, 10))
         out = torchvision.utils.make_grid(test_images[:8].cpu(), 8, normalize=True)
         plt.imshow(out.numpy().transpose((1, 2, 0)))
-        plt.show()
         plt.savefig('predictions.png')  # Save the figure
+        # plt.show()
+        
         
         print("Predicted Values\n", list(pred[:8].cpu().numpy()))
         print("True Values\n", list(test_labels[:8].numpy()))
@@ -72,5 +74,6 @@ def visualize_attention(image, attention_map, x_dim, y_dim):
     axes[1].set_title("Attention Map")
     axes[1].axis('off')
 
-    plt.show()
     plt.savefig('attention_map.png')  # Save the figure
+    # plt.show()
+    
