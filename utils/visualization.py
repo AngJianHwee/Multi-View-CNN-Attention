@@ -71,7 +71,6 @@ def visualize_attention(images, attention_maps, x_dim, y_dim):
         for j, (att_map, title) in enumerate(zip(attention_maps[i], titles)):
             # axes[i, j + 1].imshow(att_map.cpu().numpy(), cmap='hot', interpolation='nearest')
             # overlay the attention map on the image
-            att_map = att_map.cpu().numpy()
             axes[i, j + 1].imshow(img_display, alpha=0.5)
             axes[i, j + 1].imshow(att_map, cmap='hot', alpha=0.5)
             
