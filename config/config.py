@@ -4,7 +4,7 @@ import torch
 batch_size = 64
 num_epochs = 50
 learning_rate = 1e-4
-data_set_root = "../../datasets"
+data_set_root = "./datasets"
 
 # Device configuration
 gpu_indx = 0

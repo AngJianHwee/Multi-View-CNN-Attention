@@ -3,7 +3,7 @@ import torchvision
 import torchvision.transforms as transforms
 import torch.utils.data as data
 
-def get_data_loaders(batch_size=64, validation_split=0.1, dataset_root="../../datasets"):
+def get_data_loaders(batch_size=64, validation_split=0.1, dataset_root="./datasets"):
     transform = transforms.Compose([
         transforms.AutoAugment(transforms.AutoAugmentPolicy.CIFAR10),
         transforms.ToTensor(),

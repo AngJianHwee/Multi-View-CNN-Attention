@@ -7,6 +7,10 @@ from training.evaluate import evaluate  # Will need to update this too
 from utils.visualization import plot_training_metrics, visualize_predictions
 
 def main():
+    # check if data_set_root exists
+    if not os.path.exists(data_set_root):
+        os.makedirs(data_set_root)
+    
     train_loader, valid_loader, test_loader = get_data_loaders(data_set_root, batch_size)
     
     # Initialize ThreeViewCNN with 3 channels for each view (CIFAR-10 has 3 channels)
