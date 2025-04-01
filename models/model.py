@@ -30,6 +30,9 @@ class SingleViewCNN(nn.Module):
         
         # case not 32
         self.fc_out = nn.Linear(128 * (reshape_size // 8) * (reshape_size // 8), output_dim)
+        print(f"reshape_size: {reshape_size}")
+        print(f"self.fc_out: {self.fc_out}")
+        
         
     def use_attention(self, x):
         bs, c, h, w = x.shape
