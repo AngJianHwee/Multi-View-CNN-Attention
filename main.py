@@ -37,9 +37,9 @@ def main():
     training_acc_logger = []
 
     best_3_acc = [
-        {"epoch": -1, "acc": 0.0, "model_dict": model.state_dict().copy().cpu()},
-        {"epoch": -2, "acc": 0.01, "model_dict": model.state_dict().copy().cpu()},
-        {"epoch": -3, "acc": 0.02, "model_dict": model.state_dict().copy().cpu()},
+        {"epoch": -1, "acc": 0.0, "model_dict": model.state_dict().copy()},
+        {"epoch": -2, "acc": 0.01, "model_dict": model.state_dict().copy()},
+        {"epoch": -3, "acc": 0.02, "model_dict": model.state_dict().copy()},
     ]
     for epoch in range(num_epochs):
         # Train with three identical inputs
@@ -61,7 +61,7 @@ def main():
         
         # Save the best model based on validation accuracy, 
         # so it will compare with all 3, select the best 3
-        best_3_acc.append({"epoch": epoch, "acc": valid_acc, "model_dict": model.state_dict().copy().cpu()})
+        best_3_acc.append({"epoch": epoch, "acc": valid_acc, "model_dict": model.state_dict().copy()})
         
         # Sort the best 3 accuracies
         best_3_acc.sort(key=lambda x: x["acc"], reverse=True)
