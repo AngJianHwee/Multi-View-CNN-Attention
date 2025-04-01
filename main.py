@@ -88,6 +88,20 @@ def main():
     # Visualize predictions (will need to adjust visualize_predictions too)
     visualize_predictions(model, test_loader, device)
 
-
+    # save everything about logs into a json
+    logs = {
+        "training_loss": training_loss_logger,
+        "validation_accuracy": validation_acc_logger,
+        "training_accuracy": training_acc_logger,
+        "best_3_acc_no_state_dict": [
+            {"epoch": b["epoch"], "acc": b["acc"]} for b in best_3_acc
+        ],
+    }
+    logs_path = os.path.join(data_set_root, "logs.json")
+    with open(logs_path, "w") as f:
+        import json
+        json.dump(logs, f)
+    print(f"Saved logs to {logs_path}")
+    
 if __name__ == "__main__":
     main()
