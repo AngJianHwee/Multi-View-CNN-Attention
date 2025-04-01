@@ -6,7 +6,7 @@ from models.model import ThreeViewCNN  # Updated import
 from training.train import train  # Will need to update this too
 from training.evaluate import evaluate  # Will need to update this too
 from utils.visualization import plot_training_metrics, visualize_predictions, visualize_attention
-
+import numpy as np
 import os
 
 
@@ -156,10 +156,11 @@ def main():
             print(f"Normalized Attention Map 2 Shape: {att_map2.shape}")
             print(f"Normalized Attention Map 3 Shape: {att_map3.shape}")
 
-            # Reshape the attention maps to the original image size [not using view]
-            att_map1 = att_map1.reshape(1, 1, 32, 32)
-            att_map2 = att_map2.reshape(1, 1, 32, 32)
-            att_map3 = att_map3.reshape(1, 1, 32, 32)
+            # Reshape the attention maps to the original image size [from 1024,1024 to [32,32]
+            att_map1 = np.resize(att_map1.cpu().numpy(), (32, 32))
+            att_map2 = np.resize(att_map2.cpu().numpy(), (32, 32))
+            att_map3 = np.resize(att_map3.cpu().numpy(), (32, 32))
+            
             
             
             # Append the attention maps for the current image
