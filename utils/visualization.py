@@ -75,6 +75,6 @@ def visualize_attention(images, attention_maps, x_dim, y_dim):
             axes[i, j + 1].axis('off')
 
     plt.tight_layout()
-    plt.savefig('mean_attention_maps_five_images.png')
-    print("Mean attention maps for 5 images saved as mean_attention_maps_five_images.png")
+    plt.savefig('attention_maps_five_images.png')
+    print("Attention maps for 5 images saved as attention_maps_five_images.png")
     # plt.show()  # Uncomment if you want to display it too

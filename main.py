@@ -22,14 +22,12 @@ def main(batch_size, num_epochs, learning_rate, data_set_root, device):
     # Initialize ThreeViewCNN with 3 channels for each view (CIFAR-10 has 3 channels)
 
     model = ThreeViewCNN(
-        channels_ins=[3, 3, 3],
-        output_dims_individual=[10, 10, 10],
-        output_dim=10
+        channels_ins=[3, 3, 3], output_dims_individual=[10, 10, 10], output_dim=10
     ).to(device)
-    
+
     # Print model summary before training
     print_model_summary(model, input_size=[(3, 32, 32)] * 3, device=device)
-    
+
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     loss_fun = torch.nn.CrossEntropyLoss()
 
@@ -55,36 +53,44 @@ def main(batch_size, num_epochs, learning_rate, data_set_root, device):
         print(
             f"Epoch {epoch+1}/{num_epochs}, Train Acc: {train_acc:.4f}, Valid Acc: {valid_acc:.4f}"
         )
-        
+
         # Evaluate on test set
         test_acc = evaluate(model, device, test_loader)
         print(f"Test Accuracy: {test_acc:.4f}")
-        
-        # Save the best model based on validation accuracy, 
+
+        # Save the best model based on validation accuracy,
         # so it will compare with all 3, select the best 3
-        best_3_acc.append({"epoch": epoch, "acc": valid_acc, "model_dict": model.state_dict().copy()})
-        
+        best_3_acc.append(
+            {"epoch": epoch, "acc": valid_acc, "model_dict": model.state_dict().copy()}
+        )
+
         # Sort the best 3 accuracies
         best_3_acc.sort(key=lambda x: x["acc"], reverse=True)
-        
+
         # Keep only the top 3
         best_3_acc = best_3_acc[:3]
-        print(f"Best 3 accuracies so far: {[(b['epoch'], b['acc']) for b in best_3_acc]}")
-        
+        print(
+            f"Best 3 accuracies so far: {[(b['epoch'], b['acc']) for b in best_3_acc]}"
+        )
+
     # Save the model for 3 best epochs
     for i, best_model in enumerate(best_3_acc):
-        model_path = os.path.join(data_set_root, f"best_model_epoch_{best_model['epoch']}.pth")
+        model_path = os.path.join(
+            data_set_root, f"best_model_epoch_{best_model['epoch']}.pth"
+        )
         torch.save(best_model["model_dict"], model_path)
-        print(f"Saved model for epoch {best_model['epoch']} with accuracy {best_model['acc']} to {model_path}")
+        print(
+            f"Saved model for epoch {best_model['epoch']} with accuracy {best_model['acc']} to {model_path}"
+        )
     # Save the final model
     final_model_path = os.path.join(data_set_root, "final_model.pth")
     torch.save(model.state_dict(), final_model_path)
     print(f"Saved final model to {final_model_path}")
-        
-        
 
     # Plot metrics
-    plot_training_metrics(training_loss_logger, training_acc_logger, validation_acc_logger, num_epochs)
+    plot_training_metrics(
+        training_loss_logger, training_acc_logger, validation_acc_logger, num_epochs
+    )
 
     # # Visualize predictions (will need to adjust visualize_predictions too)
     # visualize_predictions(model, test_loader, device)
@@ -101,43 +107,49 @@ def main(batch_size, num_epochs, learning_rate, data_set_root, device):
     logs_path = os.path.join(data_set_root, "logs.json")
     with open(logs_path, "w") as f:
         import json
+
         json.dump(logs, f)
     print(f"Saved logs to {logs_path}")
-
 
     # Add attention visualization for all three views with batch inference
     model.eval()
     with torch.no_grad():
         test_images, _ = next(iter(test_loader))
         test_images = test_images.to(device)
-        
+
         # Take first 5 images for visualization
         sample_images = test_images[:5]
-        
+
         # Batch inference for all images in the batch to get attention maps
         batch_size = test_images.size(0)
-        
+
         # Process through each view for the entire batch
         x1 = model.view1.conv1(test_images)  # [batch_size, 64, 32, 32]
         _, att_map1 = model.view1.use_attention(x1)  # [batch_size, 1024, 1024]
-        
+
         x2 = model.view2.conv1(test_images)
         _, att_map2 = model.view2.use_attention(x2)
-        
+
         x3 = model.view3.conv1(test_images)
         _, att_map3 = model.view3.use_attention(x3)
-        
-        # Compute mean attention map across the batch for each view
-        # att_map shape: [batch_size, seq_len, seq_len] -> mean over batch
-        mean_att_map1 = att_map1.mean(dim=0)[0]  # [1024] (mean across batch, first position)
-        mean_att_map2 = att_map2.mean(dim=0)[0]
-        mean_att_map3 = att_map3.mean(dim=0)[0]
-        
+
+        # normalize attention maps
+        att_map1 = (att_map1 - att_map1.min()) / (att_map1.max() - att_map1.min())
+        att_map2 = (att_map2 - att_map2.min()) / (att_map2.max() - att_map2.min())
+        att_map3 = (att_map3 - att_map3.min()) / (att_map3.max() - att_map3.min())
+
         # Prepare attention maps for visualization (same mean map for all 5 images)
-        attention_maps = [(mean_att_map1, mean_att_map2, mean_att_map3)] * 5
-        
+        attention_maps = [att_map1, att_map2, att_map3]
+
         # Visualize 5 images with their corresponding mean attention maps
         visualize_attention(sample_images, attention_maps, x_dim=16, y_dim=16)
 
+
 if __name__ == "__main__":
-    main(batch_size=batch_size, num_epochs=num_epochs, learning_rate=learning_rate, data_set_root=data_set_root, device=device)
+    main(
+        batch_size=batch_size,
+        num_epochs=num_epochs,
+        learning_rate=learning_rate,
+        data_set_root=data_set_root,
+        device=device,
+    )
