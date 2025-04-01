@@ -49,14 +49,15 @@ def print_model_summary(model, input_size, device, reshape_size):
     print(f"Temporary file {temp_path} removed.")
 
 if __name__ == "__main__":
-    # Example usage with ThreeViewCNN
-    from models.model import ThreeViewCNN
-    from config.config import reshape_size
+    pass
+    # # Example usage with ThreeViewCNN
+    # from models.model import ThreeViewCNN
+    # from config.config import reshape_size
     
     
-    # Assuming CIFAR-10 input size (3, 32, 32) for each view
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = ThreeViewCNN(channels_ins=[3, 3, 3], output_dim=10)
-    input_size = [(3, reshape_size, reshape_size)] * 3  # Three identical inputs
+    # # Assuming CIFAR-10 input size (3, 32, 32) for each view
+    # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    # model = ThreeViewCNN(channels_ins=[3, 3, 3], output_dims=[10, 10, 10], output_dim=10, reshape_size=reshape_size).to(device)
+    # input_size = [(3, reshape_size, reshape_size)] * 3  # Three identical inputs
     
-    print_model_summary(model, input_size, device)
+    # print_model_summary(model, input_size, device)
