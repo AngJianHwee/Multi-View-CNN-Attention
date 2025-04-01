@@ -158,11 +158,15 @@ def main():
             print(f"Normalized Attention Map 1 Shape: {att_map1.shape}")
             print(f"Normalized Attention Map 2 Shape: {att_map2.shape}")
             print(f"Normalized Attention Map 3 Shape: {att_map3.shape}")
+            # Normalized Attention Map 1 Shape: torch.Size([1, 1024, 1024])
+            # Normalized Attention Map 2 Shape: torch.Size([1, 1024, 1024])
+            # Normalized Attention Map 3 Shape: torch.Size([1, 1024, 1024])
+
             
             # Reshape to 32x32
-            att_map1 = att_map1.cpu().numpy()
-            att_map2 = att_map2.cpu().numpy()
-            att_map3 = att_map3.cpu().numpy()
+            att_map1 = att_map1.unsqueeze().cpu().numpy()
+            att_map2 = att_map2.unsqueeze().cpu().numpy()
+            att_map3 = att_map3.unsqueeze().cpu().numpy()
             
             # Append corrected attention maps
             attention_maps.append((att_map1, att_map2, att_map3))
