@@ -106,6 +106,10 @@ def main():
 
 
     # Add attention visualization for all three views with batch inference
+    # load best
+    best_model_dict = best_3_acc[0]["model_dict"]
+    model.load_state_dict(best_model_dict)
+    print("Loaded best model for attention visualization")
     model.eval()
     with torch.no_grad():
         test_images, _ = next(iter(test_loader))
@@ -151,11 +155,12 @@ def main():
             print(f"Normalized Attention Map 1 Shape: {att_map1.shape}")
             print(f"Normalized Attention Map 2 Shape: {att_map2.shape}")
             print(f"Normalized Attention Map 3 Shape: {att_map3.shape}")
+
+            # Reshape the attention maps to the original image size [not using view]
+            att_map1 = att_map1.reshape(1, 1, 32, 32)
+            att_map2 = att_map2.reshape(1, 1, 32, 32)
+            att_map3 = att_map3.reshape(1, 1, 32, 32)
             
-            # Reshape the attention maps to the original image size
-            att_map1 = att_map1.view(32, 32)
-            att_map2 = att_map2.view(32, 32)
-            att_map3 = att_map3.view(32, 32)
             
             # Append the attention maps for the current image
             attention_maps.append((att_map1[0], att_map2[0], att_map3[0]))
