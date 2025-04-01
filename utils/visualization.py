@@ -2,6 +2,9 @@ import matplotlib.pyplot as plt
 import torchvision
 import torch
 
+# Set the style for matplotlib
+plt.style.use('ggplot')
+
 def plot_training_metrics(training_loss_logger, training_acc_logger, validation_acc_logger, num_epochs):
     import matplotlib.pyplot as plt
     import numpy as np
@@ -35,30 +38,49 @@ def plot_training_metrics(training_loss_logger, training_acc_logger, validation_
 
     plt.tight_layout()
     plt.savefig('training_metrics.png')  # Save the figure
+    print("Training metrics saved as training_metrics.png")
     # plt.show()
 
 
 # Rest of your visualization.py (like visualize_predictions) would go here
-def visualize_predictions(model, test_loader, device):
-    model.eval()
-    with torch.no_grad():
-        test_images, test_labels = next(iter(test_loader))
-        test_images = test_images.to(device)
-        fx, _ = model(test_images, test_images, test_images)  # Get predictions
-        pred = fx.argmax(-1)
-        
-        plt.figure(figsize=(20, 10))
-        out = torchvision.utils.make_grid(test_images[:8].cpu(), 8, normalize=True)
-        plt.imshow(out.numpy().transpose((1, 2, 0)))
-        plt.savefig('predictions.png')  # Save the figure
-        # plt.show()
-        
-        
-        print("Predicted Values\n", list(pred[:8].cpu().numpy()))
-        print("True Values\n", list(test_labels[:8].numpy()))
+def visualize_attention(images, attention_maps, x_dim, y_dim):
+    """
+    Visualize 5 images and their mean attention maps from three views in a 5x4 grid.
+    
+    Args:
+        images: Tensor of shape [5, C, H, W]
+        attention_maps: List of 5 tuples, each with 3 mean attention maps [seq_len] (e.g., 1024)
+        x_dim, y_dim: Coordinates to mark on the original images
+    """
+    fig, axes = plt.subplots(5, 4, figsize=(16, 20))  # 5 rows, 4 columns (20 total subplots)
 
+    for i in range(5):
+        # Normalize image for display
+        img_display = images[i].permute(1, 2, 0).cpu().numpy()
+        img_display = (img_display - img_display.min()) / (img_display.max() - img_display.min())
+        
+        # Plot the original image
+        axes[i, 0].imshow(img_display)
+        if i == 0:
+            axes[i, 0].set_title("Original Image")
+        axes[i, 0].axis('off')
+        axes[i, 0].scatter(x_dim, y_dim, color='red', marker='x')
 
-def visualize_attention(image, attention_map, x_dim, y_dim):
+        # Plot mean attention maps for each view
+        titles = ["View 1 Mean Attention", "View 2 Mean Attention", "View 3 Mean Attention"]
+        for j, (att_map, title) in enumerate(zip(attention_maps[i], titles)):
+            axes[i, j + 1].imshow(att_map.reshape(32, 32).cpu().numpy(), cmap='viridis')
+            if i == 0:
+                axes[i, j + 1].set_title(title)
+            axes[i, j + 1].axis('off')
+
+    plt.tight_layout()
+    plt.savefig('mean_attention_maps_five_images.png')
+    print("Mean attention maps for 5 images saved as mean_attention_maps_five_images.png")
+    # plt.show()  # Uncomment if you want to display it too
+
+def visualize_attention(image, attention_map, x_dim, y_dim, save_path=None):
+    
     import matplotlib.pyplot as plt
 
     fig, axes = plt.subplots(1, 2, figsize=(6, 3))
@@ -74,6 +96,11 @@ def visualize_attention(image, attention_map, x_dim, y_dim):
     axes[1].set_title("Attention Map")
     axes[1].axis('off')
 
-    plt.savefig('attention_map.png')  # Save the figure
+    if save_path:
+        plt.savefig(save_path)
+        print(f"Attention map saved as {save_path}")
+    else:
+        plt.savefig('attention_map.png')  # Save the figure
+        print("Attention map saved as attention_map.png")
     # plt.show()
     

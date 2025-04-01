@@ -5,7 +5,8 @@ from data.data_loader import get_data_loaders  # Assuming this still exists
 from models.model import ThreeViewCNN  # Updated import
 from training.train import train  # Will need to update this too
 from training.evaluate import evaluate  # Will need to update this too
-from utils.visualization import plot_training_metrics, visualize_predictions
+from utils.visualization import plot_training_metrics, visualize_predictions, visualize_attention
+
 import os
 
 
@@ -102,6 +103,41 @@ def main():
         import json
         json.dump(logs, f)
     print(f"Saved logs to {logs_path}")
-    
+
+
+    # Add attention visualization for all three views with batch inference
+    model.eval()
+    with torch.no_grad():
+        test_images, _ = next(iter(test_loader))
+        test_images = test_images.to(device)
+        
+        # Take first 5 images for visualization
+        sample_images = test_images[:5]
+        
+        # Batch inference for all images in the batch to get attention maps
+        batch_size = test_images.size(0)
+        
+        # Process through each view for the entire batch
+        x1 = model.view1.conv1(test_images)  # [batch_size, 64, 32, 32]
+        _, att_map1 = model.view1.use_attention(x1)  # [batch_size, 1024, 1024]
+        
+        x2 = model.view2.conv1(test_images)
+        _, att_map2 = model.view2.use_attention(x2)
+        
+        x3 = model.view3.conv1(test_images)
+        _, att_map3 = model.view3.use_attention(x3)
+        
+        # Compute mean attention map across the batch for each view
+        # att_map shape: [batch_size, seq_len, seq_len] -> mean over batch
+        mean_att_map1 = att_map1.mean(dim=0)[0]  # [1024] (mean across batch, first position)
+        mean_att_map2 = att_map2.mean(dim=0)[0]
+        mean_att_map3 = att_map3.mean(dim=0)[0]
+        
+        # Prepare attention maps for visualization (same mean map for all 5 images)
+        attention_maps = [(mean_att_map1, mean_att_map2, mean_att_map3)] * 5
+        
+        # Visualize 5 images with their corresponding mean attention maps
+        visualize_attention(sample_images, attention_maps, x_dim=16, y_dim=16)
+
 if __name__ == "__main__":
     main()
