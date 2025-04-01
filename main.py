@@ -147,6 +147,15 @@ def main():
             att_map2 = (att_map2 - att_map2.min()) / (att_map2.max() - att_map2.min())
             att_map3 = (att_map3 - att_map3.min()) / (att_map3.max() - att_map3.min())
             
+            # Print the normalized attention map shapes
+            print(f"Normalized Attention Map 1 Shape: {att_map1.shape}")
+            print(f"Normalized Attention Map 2 Shape: {att_map2.shape}")
+            print(f"Normalized Attention Map 3 Shape: {att_map3.shape}")
+            
+            # Reshape the attention maps to the original image size
+            att_map1 = att_map1.view(32, 32)
+            att_map2 = att_map2.view(32, 32)
+            att_map3 = att_map3.view(32, 32)
             
             # Append the attention maps for the current image
             attention_maps.append((att_map1[0], att_map2[0], att_map3[0]))
