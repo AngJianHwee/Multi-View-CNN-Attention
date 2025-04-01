@@ -164,9 +164,9 @@ def main():
 
             
             # Reshape to 32x32
-            att_map1 = att_map1.unsqueeze().cpu().numpy()
-            att_map2 = att_map2.unsqueeze().cpu().numpy()
-            att_map3 = att_map3.unsqueeze().cpu().numpy()
+            att_map1 = att_map1.unsqueeze(0).cpu().numpy()
+            att_map2 = att_map2.unsqueeze(0).cpu().numpy()
+            att_map3 = att_map3.unsqueeze(0).cpu().numpy()
             
             # Append corrected attention maps
             attention_maps.append((att_map1, att_map2, att_map3))
