@@ -1,8 +1,8 @@
 import torch
 
 # Configuration settings
-batch_size = 64
-num_epochs = 50
+batch_size = 128
+num_epochs = 3
 learning_rate = 1e-4
 data_set_root = "./datasets"
 
