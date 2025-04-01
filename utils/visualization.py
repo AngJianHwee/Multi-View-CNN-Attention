@@ -66,7 +66,7 @@ def visualize_attention(images, attention_maps, x_dim, y_dim):
         if i == 0:
             axes[i, 0].set_title("Original Image")
         axes[i, 0].axis('off')
-        axes[i, 0].scatter(x_dim, y_dim, color='red', marker='x')
+        # axes[i, 0].scatter(x_dim, y_dim, color='red', marker='x')
 
         # Plot mean attention maps as a heatmap on the original image
         titles = ["View 1 Mean Attention", "View 2 Mean Attention", "View 3 Mean Attention"]

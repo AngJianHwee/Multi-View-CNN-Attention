@@ -14,7 +14,7 @@ def train(model, optimizer, loader, device, loss_fun, loss_logger):
         optimizer.step()
         loss_logger.append(loss.item())
         
-        break  # TODO: Remove this break to train on the entire dataset
+        # break  # TODO: Remove this break to train on the entire dataset
         
         if i > len(loader) *0.01:
             # Limit to 1% of the dataset for quick training

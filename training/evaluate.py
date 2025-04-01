@@ -13,7 +13,7 @@ def evaluate(model, device, loader):
             epoch_acc += (fx.argmax(1) == y).sum().item()
             total_samples += y.size(0)
             
-            break   # TODO: Remove this break to evaluate on the entire dataset
+            # break   # TODO: Remove this break to evaluate on the entire dataset
             
             if i > len(loader) *0.01:
                 # Limit to 1% of the dataset for quick evaluation
