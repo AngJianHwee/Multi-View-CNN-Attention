@@ -68,16 +68,25 @@ def visualize_attention(images, attention_maps, x_dim, y_dim):
         axes[i, 0].axis('off')
         axes[i, 0].scatter(x_dim, y_dim, color='red', marker='x')
 
-        # Plot mean attention maps for each view
+        # Plot mean attention maps as a heatmap on the original image
         titles = ["View 1 Mean Attention", "View 2 Mean Attention", "View 3 Mean Attention"]
         for j, (att_map, title) in enumerate(zip(attention_maps[i], titles)):
-            att_map = att_map.cpu().numpy()
-            att_map = np.reshape(att_map, (32, 32))
-            axes[i, j + 1].imshow(att_map, cmap='viridis')
+            # att_map = att_map.cpu().numpy()
+            # axes[i, j + 1].imshow(att_map, cmap='viridis')
+            # if i == 0:
+            #     axes[i, j + 1].set_title(title)
+            # axes[i, j + 1].axis('off')
+            
+            # Normalize attention map for display
+            att_map_display = att_map.cpu().numpy()
+            att_map_display = (att_map_display - att_map_display.min()) / (att_map_display.max() - att_map_display.min())
+            axes[i, j + 1].imshow(att_map_display, cmap='viridis')
             if i == 0:
                 axes[i, j + 1].set_title(title)
             axes[i, j + 1].axis('off')
-
+            axes[i, j + 1].scatter(x_dim, y_dim, color='red', marker='x')
+            
+    # Adjust layout and save the figure
     plt.tight_layout()
     plt.savefig('attention_maps_five_images.png')
     print("Attention maps for 5 images saved as attention_maps_five_images.png")

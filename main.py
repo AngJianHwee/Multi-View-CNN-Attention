@@ -126,25 +126,29 @@ def main(batch_size, num_epochs, learning_rate, data_set_root, device):
         # Process through each view for the entire batch
         x1 = model.view1.conv1(test_images)  # [batch_size, 64, 32, 32]
         _, att_map1 = model.view1.use_attention(x1)  # [batch_size, 1024, 1024]
-
         x2 = model.view2.conv1(test_images)
         _, att_map2 = model.view2.use_attention(x2)
-
         x3 = model.view3.conv1(test_images)
         _, att_map3 = model.view3.use_attention(x3)
 
-        # normalize attention maps
-        att_map1 = (att_map1 - att_map1.min()) / (att_map1.max() - att_map1.min())
-        att_map2 = (att_map2 - att_map2.min()) / (att_map2.max() - att_map2.min())
-        att_map3 = (att_map3 - att_map3.min()) / (att_map3.max() - att_map3.min())
+        # keep only first 5
+        att_map1 = att_map1[:5]
+        att_map2 = att_map1[:5]
+        att_map3 = att_map1[:5]
 
         # print shape
         print(f"Attention map 1 shape: {att_map1.shape}")
         print(f"Attention map 2 shape: {att_map2.shape}")
         print(f"Attention map 3 shape: {att_map3.shape}")
+        print(f"Sample images shape: {sample_images.shape}")
         
         # Prepare attention maps for visualization (same mean map for all 5 images)
-        attention_maps = [att_map1, att_map2, att_map3]
+        attention_maps = []
+        for i in range(5):
+            att_map1_mean = att_map1[i].mean(dim=0)
+            att_map2_mean = att_map2[i].mean(dim=0)
+            att_map3_mean = att_map3[i].mean(dim=0)
+            attention_maps.append((att_map1_mean, att_map2_mean, att_map3_mean))
 
         # Visualize 5 images with their corresponding mean attention maps
         visualize_attention(sample_images, attention_maps, x_dim=16, y_dim=16)
