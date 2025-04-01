@@ -145,13 +145,18 @@ def main(batch_size, num_epochs, learning_rate, data_set_root, device):
         # Prepare attention maps for visualization (same mean map for all 5 images)
         attention_maps = []
         for i in range(5):
-            att_map1_mean = att_map1[i].mean(dim=0)
-            print(f"Attention map 1 mean shape: {att_map1_mean.shape}")
-            att_map2_mean = att_map2[i].mean(dim=0)
-            print(f"Attention map 1 mean shape: {att_map1_mean.shape}")
-            att_map3_mean = att_map3[i].mean(dim=0)
-            print(f"Attention map 1 mean shape: {att_map1_mean.shape}")
-            attention_maps.append((att_map1_mean, att_map2_mean, att_map3_mean))
+            # Calculate mean attention map for each view
+            mean_att_map1 = att_map1[i,:,:].mean(dim=0).cpu().numpy()
+            mean_att_map2 = att_map2[i,:,:].mean(dim=0).cpu().numpy()
+            mean_att_map3 = att_map3[i,:,:].mean(dim=0).cpu().numpy()
+            
+            # reshape them to 32x32
+            mean_att_map1 = mean_att_map1.reshape(32, 32)
+            mean_att_map2 = mean_att_map2.reshape(32, 32)
+            mean_att_map3 = mean_att_map3.reshape(32, 32)
+            
+            # Normalize the attention maps
+            attention_maps.append((mean_att_map1, mean_att_map2, mean_att_map3))
 
         # Visualize 5 images with their corresponding mean attention maps
         visualize_attention(sample_images, attention_maps, x_dim=16, y_dim=16)
