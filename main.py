@@ -5,7 +5,7 @@ from data.data_loader import get_data_loaders  # Assuming this still exists
 from models.model import ThreeViewCNN  # Updated import
 from training.train import train  # Will need to update this too
 from training.evaluate import evaluate  # Will need to update this too
-from utils.visualization import plot_training_metrics, visualize_predictions, visualize_attention
+from utils.visualization import plot_training_metrics, visualize_attention
 
 import os
 
@@ -86,8 +86,8 @@ def main():
     # Plot metrics
     plot_training_metrics(training_loss_logger, training_acc_logger, validation_acc_logger, num_epochs)
 
-    # Visualize predictions (will need to adjust visualize_predictions too)
-    visualize_predictions(model, test_loader, device)
+    # # Visualize predictions (will need to adjust visualize_predictions too)
+    # visualize_predictions(model, test_loader, device)
 
     # save everything about logs into a json
     logs = {
