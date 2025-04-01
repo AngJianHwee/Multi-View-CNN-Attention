@@ -164,9 +164,9 @@ def main():
 
             
             # Reshape to [1024x1024] discard the [1]
-            att_map1 = att_map1.squeeze(0)  # [1024, 1024]
-            att_map2 = att_map2.squeeze(0)
-            att_map3 = att_map3.squeeze(0)
+            att_map1 = att_map1.squeeze(0).cpu()  # [1024, 1024]
+            att_map2 = att_map2.squeeze(0).cpu()
+            att_map3 = att_map3.squeeze(0).cpu()
             print(f"Reshaped Attention Map 1 Shape: {att_map1.shape}")
             print(f"Reshaped Attention Map 2 Shape: {att_map2.shape}")
             print(f"Reshaped Attention Map 3 Shape: {att_map3.shape}")
