@@ -78,3 +78,25 @@ def visualize_attention(images, attention_maps, x_dim, y_dim):
     plt.savefig('mean_attention_maps_five_images.png')
     print("Mean attention maps for 5 images saved as mean_attention_maps_five_images.png")
     # plt.show()  # Uncomment if you want to display it too
+
+
+# Rest of your visualization.py (like visualize_predictions) would go here
+def visualize_predictions(model, test_loader, device):
+    model.eval()
+    with torch.no_grad():
+        test_images, test_labels = next(iter(test_loader))
+        test_images = test_images.to(device)
+        fx, _ = model(test_images, test_images, test_images)  # Get predictions
+        pred = fx.argmax(-1)
+        
+        plt.figure(figsize=(20, 10))
+        out = torchvision.utils.make_grid(test_images[:8].cpu(), 8, normalize=True)
+        plt.imshow(out.numpy().transpose((1, 2, 0)))
+        plt.savefig('predictions.png')  # Save the figure
+        # plt.show()
+        
+        
+        print("Predicted Values\n", list(pred[:8].cpu().numpy()))
+        print("True Values\n", list(test_labels[:8].numpy()))
+
+
