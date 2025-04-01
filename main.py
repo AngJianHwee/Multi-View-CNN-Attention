@@ -5,6 +5,7 @@ from models.model import ThreeViewCNN  # Updated import
 from training.train import train  # Will need to update this too
 from training.evaluate import evaluate  # Will need to update this too
 from utils.visualization import plot_training_metrics, visualize_predictions
+import os
 
 def main():
     # check if data_set_root exists
