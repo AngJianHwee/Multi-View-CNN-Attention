@@ -72,7 +72,7 @@ class ThreeViewCNN(nn.Module):
         # Fusion mechanism using a FC layer
         feature_dim = self.view1.fc_out.in_features + self.view2.fc_out.in_features + self.view3.fc_out.in_features
 
-        total_feature_dim = feature_dim * 3  # Concatenated features from all views
+        total_feature_dim = feature_dim # Concatenated features from all views
         
         self.fusion = nn.Sequential(
             nn.Linear(total_feature_dim, 64),  # Learnable fusion of concatenated features
