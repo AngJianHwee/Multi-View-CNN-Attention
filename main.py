@@ -1,6 +1,6 @@
 from utils.model_summary import print_model_summary
 import torch
-from config.config import batch_size, num_epochs, learning_rate, data_set_root, device
+from config.config import batch_size, num_epochs, learning_rate, data_set_root, device, reshape_size
 from data.data_loader import get_data_loaders  # Assuming this still exists
 from models.model import ThreeViewCNN  # Updated import
 from training.train import train  # Will need to update this too
@@ -28,7 +28,7 @@ def main():
     ).to(device)
     
     # Print model summary before training
-    print_model_summary(model, input_size=[(3, 32, 32)] * 3, device=device)
+    print_model_summary(model, input_size=[(3, reshape_size, reshape_size)] * 3, device=device)
     
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     loss_fun = torch.nn.CrossEntropyLoss()
@@ -161,9 +161,9 @@ def main():
             print(f"Normalized Attention Map 3 Shape: {att_map3.shape}")
             
             # Reshape to 32x32
-            att_map1 = att_map1.view(32, 32).cpu().numpy()
-            att_map2 = att_map2.view(32, 32).cpu().numpy()
-            att_map3 = att_map3.view(32, 32).cpu().numpy()
+            att_map1 = att_map1.view(reshape_size, reshape_size).cpu().numpy()
+            att_map2 = att_map2.view(reshape_size, reshape_size).cpu().numpy()
+            att_map3 = att_map3.view(reshape_size, reshape_size).cpu().numpy()
             
             # Append corrected attention maps
             attention_maps.append((att_map1, att_map2, att_map3))
