@@ -36,6 +36,11 @@ def main():
     validation_acc_logger = []
     training_acc_logger = []
 
+    best_3_acc = [
+        {"epoch": -1, "acc": 0.0, model_dict: model.state_dict().copy().cpu()},
+        {"epoch": -2, "acc": 0.01, model_dict: model.state_dict().copy().cpu()},
+        {"epoch": -3, "acc": 0.02, model_dict: model.state_dict().copy().cpu()},
+    ]
     for epoch in range(num_epochs):
         # Train with three identical inputs
         model, optimizer, training_loss_logger = train(
@@ -49,6 +54,33 @@ def main():
         print(
             f"Epoch {epoch+1}/{num_epochs}, Train Acc: {train_acc:.4f}, Valid Acc: {valid_acc:.4f}"
         )
+        
+        # Evaluate on test set
+        test_acc = evaluate(model, device, test_loader)
+        print(f"Test Accuracy: {test_acc:.4f}")
+        
+        # Save the best model based on validation accuracy, 
+        # so it will compare with all 3, select the best 3
+        best_3_acc.append({"epoch": epoch, "acc": valid_acc, "model_dict": model.state_dict().copy().cpu()})
+        
+        # Sort the best 3 accuracies
+        best_3_acc.sort(key=lambda x: x["acc"], reverse=True)
+        
+        # Keep only the top 3
+        best_3_acc = best_3_acc[:3]
+        print(f"Best 3 accuracies so far: {best_3_acc}")
+        
+    # Save the model for 3 best epochs
+    for i, best_model in enumerate(best_3_acc):
+        model_path = os.path.join(data_set_root, f"best_model_epoch_{best_model['epoch']}.pth")
+        torch.save(best_model["model_dict"], model_path)
+        print(f"Saved model for epoch {best_model['epoch']} with accuracy {best_model['acc']} to {model_path}")
+    # Save the final model
+    final_model_path = os.path.join(data_set_root, "final_model.pth")
+    torch.save(model.state_dict(), final_model_path)
+    print(f"Saved final model to {final_model_path}")
+        
+        
 
     # Plot metrics
     plot_training_metrics(training_loss_logger, training_acc_logger, validation_acc_logger, num_epochs)
