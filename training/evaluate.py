@@ -14,7 +14,7 @@ def evaluate(model, device, loader):
             total_samples += y.size(0)
             # break   # TODO: Remove this break to evaluate on the entire dataset
             
-            if i > len(loader) // 20: # TODO: Remove this break to train on the entire dataset
+            if i > len(loader) // 100: # TODO: Remove this break to train on the entire dataset
                 # Only break after 10% of the dataset
                 break
     return epoch_acc / total_samples  # Normalize by total samples instead of dataset length
