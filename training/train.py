@@ -15,9 +15,9 @@ def train(model, optimizer, loader, device, loss_fun, loss_logger):
         loss_logger.append(loss.item())
         # break  # TODO: Remove this break to train on the entire dataset
         
-        # if i > len(loader) // 10: # TODO: Remove this break to train on the entire dataset
-        #     # Only break after 10% of the dataset
-        #     break
+        if i > len(loader) * 0.1:
+            # Only train on 10% of the dataset for quick testing
+            break
     return model, optimizer, loss_logger
 
 
