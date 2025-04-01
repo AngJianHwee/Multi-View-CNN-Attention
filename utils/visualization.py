@@ -73,7 +73,7 @@ def visualize_attention(images, attention_maps, x_dim, y_dim):
         for j, (att_map, title) in enumerate(zip(attention_maps[i], titles)):
             
             # Normalize attention map for display
-            att_map_display = att_map.cpu().numpy()
+            att_map_display = att_map.numpy()
             att_map_display = (att_map_display - att_map_display.min()) / (att_map_display.max() - att_map_display.min())
             axes[i, j + 1].imshow(att_map_display, cmap='viridis')
             if i == 0:
