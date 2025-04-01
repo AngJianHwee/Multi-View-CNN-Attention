@@ -1,3 +1,7 @@
+import matplotlib.pyplot as plt
+import torchvision
+import torch
+
 def plot_training_metrics(training_loss, validation_accuracy, num_epochs):
     import matplotlib.pyplot as plt
     import numpy as np
@@ -12,20 +16,22 @@ def plot_training_metrics(training_loss, validation_accuracy, num_epochs):
     plt.grid()
     plt.show()
 
-def visualize_predictions(images, true_labels, predictions, num_images=8):
-    import matplotlib.pyplot as plt
-    import torchvision
+def visualize_predictions(model, test_loader, device):
+    model.eval()
+    with torch.no_grad():
+        test_images, test_labels = next(iter(test_loader))
+        test_images = test_images.to(device)
+        fx, _ = model(test_images, test_images, test_images)  # Get predictions
+        pred = fx.argmax(-1)
+        
+        plt.figure(figsize=(20, 10))
+        out = torchvision.utils.make_grid(test_images[:8].cpu(), 8, normalize=True)
+        plt.imshow(out.numpy().transpose((1, 2, 0)))
+        plt.show()
+        
+        print("Predicted Values\n", list(pred[:8].cpu().numpy()))
+        print("True Values\n", list(test_labels[:8].numpy()))
 
-    plt.figure(figsize=(20, 10))
-    out = torchvision.utils.make_grid(images[:num_images], nrow=8, normalize=True)
-    plt.imshow(out.numpy().transpose((1, 2, 0)))
-    plt.title("Predictions vs True Labels")
-    plt.axis('off')
-
-    for i in range(num_images):
-        plt.text(i * 25, 0, f'True: {true_labels[i]}\nPred: {predictions[i]}', color='white', fontsize=12)
-
-    plt.show()
 
 def visualize_attention(image, attention_map, x_dim, y_dim):
     import matplotlib.pyplot as plt
