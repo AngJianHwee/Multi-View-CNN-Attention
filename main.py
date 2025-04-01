@@ -140,15 +140,15 @@ def main():
             print(f"View 2 Attention Map Shape: {att_map2.shape}")
             print(f"View 3 Attention Map Shape: {att_map3.shape}")
             
-            # Mean across batch (already 1, but for consistency)
-            att_map1 = att_map1.mean(dim=0)  # [1024, 1024]
-            att_map2 = att_map2.mean(dim=0)
-            att_map3 = att_map3.mean(dim=0)
+            # # Mean across batch (already 1, but for consistency)
+            # att_map1 = att_map1.mean(dim=0)  # [1024, 1024]
+            # att_map2 = att_map2.mean(dim=0)
+            # att_map3 = att_map3.mean(dim=0)
 
             
-            print(f"Mean Attention Map 1 Shape: {att_map1.shape}")
-            print(f"Mean Attention Map 2 Shape: {att_map2.shape}")
-            print(f"Mean Attention Map 3 Shape: {att_map3.shape}")
+            # print(f"Mean Attention Map 1 Shape: {att_map1.shape}")
+            # print(f"Mean Attention Map 2 Shape: {att_map2.shape}")
+            # print(f"Mean Attention Map 3 Shape: {att_map3.shape}")
             
             # Normalize
             att_map1 = (att_map1 - att_map1.min()) / (att_map1.max() - att_map1.min())
