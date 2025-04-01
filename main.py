@@ -1,3 +1,4 @@
+from utils.model_summary import print_model_summary
 import torch
 from config.config import batch_size, num_epochs, learning_rate, data_set_root, device
 from data.data_loader import get_data_loaders  # Assuming this still exists
@@ -24,6 +25,10 @@ def main():
         output_dims_individual=[10, 10, 10],
         output_dim=10
     ).to(device)
+    
+    # Print model summary before training
+    print_model_summary(model, input_size=[(3, 32, 32)] * 3, device=device)
+    
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     loss_fun = torch.nn.CrossEntropyLoss()
 
@@ -49,6 +54,7 @@ def main():
     plot_training_metrics(
         training_loss_logger, training_acc_logger, validation_acc_logger, num_epochs
     )
+    
 
     # Visualize predictions (will need to adjust visualize_predictions too)
     visualize_predictions(model, test_loader, device)
