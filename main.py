@@ -37,9 +37,9 @@ def main():
     training_acc_logger = []
 
     best_3_acc = [
-        {"epoch": -1, "acc": 0.0, model_dict: model.state_dict().copy().cpu()},
-        {"epoch": -2, "acc": 0.01, model_dict: model.state_dict().copy().cpu()},
-        {"epoch": -3, "acc": 0.02, model_dict: model.state_dict().copy().cpu()},
+        {"epoch": -1, "acc": 0.0, "model_dict": model.state_dict().copy().cpu()},
+        {"epoch": -2, "acc": 0.01, "model_dict": model.state_dict().copy().cpu()},
+        {"epoch": -3, "acc": 0.02, "model_dict": model.state_dict().copy().cpu()},
     ]
     for epoch in range(num_epochs):
         # Train with three identical inputs
