@@ -134,11 +134,11 @@ def main():
             x3 = model.view3.conv1(sample_images[i].unsqueeze(0))
             _, att_map3 = model.view3.use_attention(x3)
             
-            # Print initial shapes
-            print(f"Image {i+1}:")
-            print(f"View 1 Attention Map Shape: {att_map1.shape}")
-            print(f"View 2 Attention Map Shape: {att_map2.shape}")
-            print(f"View 3 Attention Map Shape: {att_map3.shape}")
+            # # Print initial shapes
+            # print(f"Image {i+1}:")
+            # print(f"View 1 Attention Map Shape: {att_map1.shape}")
+            # print(f"View 2 Attention Map Shape: {att_map2.shape}")
+            # print(f"View 3 Attention Map Shape: {att_map3.shape}")
             
             # # Mean across batch (already 1, but for consistency)
             # att_map1 = att_map1.mean(dim=0)  # [1024, 1024]
@@ -155,21 +155,18 @@ def main():
             att_map2 = (att_map2 - att_map2.min()) / (att_map2.max() - att_map2.min())
             att_map3 = (att_map3 - att_map3.min()) / (att_map3.max() - att_map3.min())
             
-            print(f"Normalized Attention Map 1 Shape: {att_map1.shape}")
-            print(f"Normalized Attention Map 2 Shape: {att_map2.shape}")
-            print(f"Normalized Attention Map 3 Shape: {att_map3.shape}")
-            # Normalized Attention Map 1 Shape: torch.Size([1, 1024, 1024])
-            # Normalized Attention Map 2 Shape: torch.Size([1, 1024, 1024])
-            # Normalized Attention Map 3 Shape: torch.Size([1, 1024, 1024])
+            # print(f"Normalized Attention Map 1 Shape: {att_map1.shape}")
+            # print(f"Normalized Attention Map 2 Shape: {att_map2.shape}")
+            # print(f"Normalized Attention Map 3 Shape: {att_map3.shape}")
 
             
             # Reshape to [1024x1024] discard the [1]
             att_map1 = att_map1.squeeze(0).cpu()  # [1024, 1024]
             att_map2 = att_map2.squeeze(0).cpu()
             att_map3 = att_map3.squeeze(0).cpu()
-            print(f"Reshaped Attention Map 1 Shape: {att_map1.shape}")
-            print(f"Reshaped Attention Map 2 Shape: {att_map2.shape}")
-            print(f"Reshaped Attention Map 3 Shape: {att_map3.shape}")
+            # print(f"Reshaped Attention Map 1 Shape: {att_map1.shape}")
+            # print(f"Reshaped Attention Map 2 Shape: {att_map2.shape}")
+            # print(f"Reshaped Attention Map 3 Shape: {att_map3.shape}")
             
             # Append corrected attention maps
             attention_maps.append((att_map1, att_map2, att_map3))
