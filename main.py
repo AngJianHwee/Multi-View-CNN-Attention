@@ -24,7 +24,8 @@ def main():
     model = ThreeViewCNN(
         channels_ins=[3, 3, 3],
         output_dims_individual=[10, 10, 10],
-        output_dim=10
+        output_dim=10,
+        reshape_size=reshape_size,
     ).to(device)
     
     # Print model summary before training

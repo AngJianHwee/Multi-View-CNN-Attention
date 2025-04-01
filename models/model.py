@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class SingleViewCNN(nn.Module):
-    def __init__(self, channels_in, output_dim=10, reshape_size=32):
+    def __init__(self, channels_in, reshape_size, output_dim=10):
         super(SingleViewCNN, self).__init__()
         
         # Convolution Layers
@@ -64,13 +64,13 @@ class SingleViewCNN(nn.Module):
         return output, features
 
 class ThreeViewCNN(nn.Module):
-    def __init__(self, channels_ins, output_dims_individual, output_dim=10):
+    def __init__(self, channels_ins, output_dims_individual, output_dim=10, reshape_size):
         super(ThreeViewCNN, self).__init__()
         
         # Three parallel view modules with their own output layers
-        self.view1 = SingleViewCNN(channels_ins[0], output_dims_individual[0])
-        self.view2 = SingleViewCNN(channels_ins[1], output_dims_individual[1])
-        self.view3 = SingleViewCNN(channels_ins[2], output_dims_individual[2])
+        self.view1 = SingleViewCNN(channels_ins[0], output_dims_individual[0], reshape_size)
+        self.view2 = SingleViewCNN(channels_ins[1], output_dims_individual[1], reshape_size)
+        self.view3 = SingleViewCNN(channels_ins[2], output_dims_individual[2], reshape_size)
         
         # Fusion mechanism using a FC layer
         feature_dim = self.view1.fc_out.in_features + self.view2.fc_out.in_features + self.view3.fc_out.in_features
