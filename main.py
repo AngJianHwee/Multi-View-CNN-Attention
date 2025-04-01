@@ -160,9 +160,9 @@ def main():
             print(f"Normalized Attention Map 3 Shape: {att_map3.shape}")
             
             # Reshape to 32x32
-            att_map1 = att_map1.view(reshape_size, reshape_size).cpu().numpy()
-            att_map2 = att_map2.view(reshape_size, reshape_size).cpu().numpy()
-            att_map3 = att_map3.view(reshape_size, reshape_size).cpu().numpy()
+            att_map1 = att_map1.cpu().numpy()
+            att_map2 = att_map2.cpu().numpy()
+            att_map3 = att_map3.cpu().numpy()
             
             # Append corrected attention maps
             attention_maps.append((att_map1, att_map2, att_map3))
