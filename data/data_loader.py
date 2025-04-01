@@ -2,11 +2,13 @@ import torch
 import torchvision
 import torchvision.transforms as transforms
 import torch.utils.data as data
+from config.config import batch_size, num_epochs, learning_rate, data_set_root, device, reshape_size
 
 def get_data_loaders(batch_size=64, validation_split=0.1, dataset_root="./datasets"):
     # Define transform for both train and test (simplified for consistency)
     transform = transforms.Compose([
         transforms.AutoAugment(transforms.AutoAugmentPolicy.CIFAR10),
+        transforms.Resize((reshape_size, reshape_size)),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
