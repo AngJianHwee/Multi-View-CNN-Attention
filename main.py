@@ -28,7 +28,7 @@ def main():
     ).to(device)
     
     # Print model summary before training
-    print_model_summary(model, input_size=[(3, reshape_size, reshape_size)] * 3, device=device)
+    # print_model_summary(model, input_size=[(3, reshape_size, reshape_size)] * 3, device=device)
     
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     loss_fun = torch.nn.CrossEntropyLoss()
