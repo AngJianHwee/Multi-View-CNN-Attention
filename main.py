@@ -68,7 +68,7 @@ def main():
         
         # Keep only the top 3
         best_3_acc = best_3_acc[:3]
-        print(f"Best 3 accuracies so far: {best_3_acc}")
+        print(f"Best 3 accuracies so far: {[(b['epoch'], b['acc']) for b in best_3_acc]}")
         
     # Save the model for 3 best epochs
     for i, best_model in enumerate(best_3_acc):
