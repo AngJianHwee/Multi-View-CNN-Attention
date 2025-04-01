@@ -174,4 +174,5 @@ def main():
     visualize_attention(sample_images, attention_maps, x_dim=128, y_dim=128)
     
 if __name__ == "__main__":
+    print("Starting main function...")
     main()
