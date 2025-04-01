@@ -118,7 +118,7 @@ class ThreeViewCNN(nn.Module):
 
         # Concatenate features for fusion
         fused_features = torch.cat((feat1, feat2, feat3), dim=1)  # BS x (128*4*4*3)
-        print(f"Fused features shape: {fused_features.shape}")
+        # print(f"Fused features shape: {fused_features.shape}")
 
         # Learnable fusion
         fused_pred = self.fusion(fused_features)
