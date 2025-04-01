@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class SingleViewCNN(nn.Module):
-    def __init__(self, channels_in, output_dim=10):
+    def __init__(self, channels_in, output_dim=10, reshape_size=32):
         super(SingleViewCNN, self).__init__()
         
         # Convolution Layers
@@ -26,7 +26,10 @@ class SingleViewCNN(nn.Module):
         
         # Individual output layer
         self.dropout = nn.Dropout(0.5)
-        self.fc_out = nn.Linear(128 * 4 * 4, output_dim)  # Assuming 32x32 input -> 4x4 after convolutions
+        # self.fc_out = nn.Linear(128 * 4 * 4, output_dim)  # Assuming 32x32 input -> 4x4 after convolutions
+        
+        # case not 32
+        self.fc_out = nn.Linear(128 * (reshape_size // 8) * (reshape_size // 8), output_dim)
         
     def use_attention(self, x):
         bs, c, h, w = x.shape
