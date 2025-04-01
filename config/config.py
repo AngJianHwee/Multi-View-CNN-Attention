@@ -11,7 +11,7 @@ gpu_indx = 0
 device = torch.device(gpu_indx if torch.cuda.is_available() else 'cpu')
 
 # reshape pixel size
-reshape_size = 128
+reshape_size = 64
 
 # print out everything
 print(f"Batch size: {batch_size}")
