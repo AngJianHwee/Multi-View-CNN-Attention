@@ -78,29 +78,3 @@ def visualize_attention(images, attention_maps, x_dim, y_dim):
     plt.savefig('mean_attention_maps_five_images.png')
     print("Mean attention maps for 5 images saved as mean_attention_maps_five_images.png")
     # plt.show()  # Uncomment if you want to display it too
-
-def visualize_attention(image, attention_map, x_dim, y_dim, save_path=None):
-    
-    import matplotlib.pyplot as plt
-
-    fig, axes = plt.subplots(1, 2, figsize=(6, 3))
-
-    # Plot the original image
-    axes[0].imshow(image.permute(1, 2, 0).cpu().numpy())
-    axes[0].set_title("Original Image")
-    axes[0].axis('off')
-    axes[0].scatter(x_dim, y_dim, color='red', marker='x')
-
-    # Plot the attention map
-    axes[1].imshow(attention_map.reshape(32, 32).cpu().numpy(), cmap='viridis')
-    axes[1].set_title("Attention Map")
-    axes[1].axis('off')
-
-    if save_path:
-        plt.savefig(save_path)
-        print(f"Attention map saved as {save_path}")
-    else:
-        plt.savefig('attention_map.png')  # Save the figure
-        print("Attention map saved as attention_map.png")
-    # plt.show()
-    
