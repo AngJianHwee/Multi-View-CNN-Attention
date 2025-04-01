@@ -73,11 +73,14 @@ def main():
         
     # Save the model for 3 best epochs
     for i, best_model in enumerate(best_3_acc):
-        model_path = os.path.join(data_set_root, f"best_model_epoch_{best_model['epoch']}.pth")
+        # if not exists, create the directory
+        if not os.path.exists("saved_models"):
+            os.makedirs("saved_models")
+        model_path = os.path.join("saved_models", f"best_model_epoch_{best_model['epoch']}.pth")
         torch.save(best_model["model_dict"], model_path)
         print(f"Saved model for epoch {best_model['epoch']} with accuracy {best_model['acc']} to {model_path}")
     # Save the final model
-    final_model_path = os.path.join(data_set_root, "final_model.pth")
+    final_model_path = os.path.join("saved_models", "final_model.pth")
     torch.save(model.state_dict(), final_model_path)
     print(f"Saved final model to {final_model_path}")
         
