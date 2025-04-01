@@ -51,10 +51,7 @@ def main():
         )
 
     # Plot metrics
-    plot_training_metrics(
-        training_loss_logger, training_acc_logger, validation_acc_logger, num_epochs
-    )
-    
+    plot_training_metrics(training_loss_logger, training_acc_logger, validation_acc_logger, num_epochs)
 
     # Visualize predictions (will need to adjust visualize_predictions too)
     visualize_predictions(model, test_loader, device)
