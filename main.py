@@ -12,7 +12,7 @@ def main():
     if not os.path.exists(data_set_root):
         os.makedirs(data_set_root)
     
-    train_loader, valid_loader, test_loader = get_data_loaders(data_set_root, batch_size)
+    train_loader, valid_loader, test_loader = get_data_loaders(batch_size=batch_size, dataset_root=data_set_root)
     
     # Initialize ThreeViewCNN with 3 channels for each view (CIFAR-10 has 3 channels)
     model = ThreeViewCNN(channels_ins=[3, 3, 3], output_dim=10).to(device)
