@@ -126,6 +126,28 @@ def main():
             x3 = model.view3.conv1(sample_images[i].unsqueeze(0))
             _, att_map3 = model.view3.use_attention(x3)
             
+            # print all the dimensions
+            print(f"Image {i+1}:")
+            print(f"View 1 Attention Map Shape: {att_map1.shape}")
+            print(f"View 2 Attention Map Shape: {att_map2.shape}")
+            print(f"View 3 Attention Map Shape: {att_map3.shape}")
+            
+            # Calculate the mean attention map for each view
+            att_map1 = att_map1.mean(dim=0)
+            att_map2 = att_map2.mean(dim=0)
+            att_map3 = att_map3.mean(dim=0)
+            
+            # Print the mean attention map shapes
+            print(f"Mean Attention Map 1 Shape: {att_map1.shape}")
+            print(f"Mean Attention Map 2 Shape: {att_map2.shape}")
+            print(f"Mean Attention Map 3 Shape: {att_map3.shape}")
+            
+            # normalize the attention maps
+            att_map1 = (att_map1 - att_map1.min()) / (att_map1.max() - att_map1.min())
+            att_map2 = (att_map2 - att_map2.min()) / (att_map2.max() - att_map2.min())
+            att_map3 = (att_map3 - att_map3.min()) / (att_map3.max() - att_map3.min())
+            
+            
             # Append the attention maps for the current image
             attention_maps.append((att_map1[0], att_map2[0], att_map3[0]))
             
