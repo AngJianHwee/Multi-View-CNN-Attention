@@ -146,8 +146,11 @@ def main(batch_size, num_epochs, learning_rate, data_set_root, device):
         attention_maps = []
         for i in range(5):
             att_map1_mean = att_map1[i].mean(dim=0)
+            print(f"Attention map 1 mean shape: {att_map1_mean.shape}")
             att_map2_mean = att_map2[i].mean(dim=0)
+            print(f"Attention map 1 mean shape: {att_map1_mean.shape}")
             att_map3_mean = att_map3[i].mean(dim=0)
+            print(f"Attention map 1 mean shape: {att_map1_mean.shape}")
             attention_maps.append((att_map1_mean, att_map2_mean, att_map3_mean))
 
         # Visualize 5 images with their corresponding mean attention maps
